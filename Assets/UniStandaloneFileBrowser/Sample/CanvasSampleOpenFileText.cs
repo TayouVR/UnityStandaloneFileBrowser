@@ -5,7 +5,14 @@ using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+<<<<<<< HEAD:Assets/UniStandaloneFileBrowser/Sample/CanvasSampleOpenFileText.cs
 using USFB;
+=======
+#if UNITY_2018_3_OR_NEWER
+using UnityEngine.Networking;
+#endif
+using SFB;
+>>>>>>> master:Assets/StandaloneFileBrowser/Sample/CanvasSampleOpenFileText.cs
 
 [RequireComponent(typeof(Button))]
 public class CanvasSampleOpenFileText : MonoBehaviour, IPointerDownHandler {
@@ -46,8 +53,14 @@ public class CanvasSampleOpenFileText : MonoBehaviour, IPointerDownHandler {
 #endif
 
     private IEnumerator OutputRoutine(string url) {
+#if UNITY_2018_3_OR_NEWER
+        var loader = UnityWebRequest.Get(url);
+        yield return loader.SendWebRequest();
+        output.text = loader.downloadHandler.text;
+#else
         var loader = new WWW(url);
         yield return loader;
         output.text = loader.text;
+#endif
     }
 }

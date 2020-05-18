@@ -5,7 +5,14 @@ using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+<<<<<<< HEAD:Assets/UniStandaloneFileBrowser/Sample/CanvasSampleOpenFileImage.cs
 using USFB;
+=======
+#if UNITY_2018_3_OR_NEWER
+using UnityEngine.Networking;
+#endif
+using SFB;
+>>>>>>> master:Assets/StandaloneFileBrowser/Sample/CanvasSampleOpenFileImage.cs
 
 [RequireComponent(typeof(Button))]
 public class CanvasSampleOpenFileImage : MonoBehaviour, IPointerDownHandler {
@@ -38,7 +45,7 @@ public class CanvasSampleOpenFileImage : MonoBehaviour, IPointerDownHandler {
     }
 
     private void OnClick() {
-        var paths = StandaloneFileBrowser.OpenFilePanel("Title", "", ".png", false);
+        var paths = StandaloneFileBrowser.OpenFilePanel("Title", "", "png", false);
         if (paths.Length > 0) {
             StartCoroutine(OutputRoutine(new System.Uri(paths[0]).AbsoluteUri));
         }
@@ -46,8 +53,14 @@ public class CanvasSampleOpenFileImage : MonoBehaviour, IPointerDownHandler {
 #endif
 
     private IEnumerator OutputRoutine(string url) {
+#if UNITY_2018_3_OR_NEWER
+        var loader = UnityWebRequestTexture.GetTexture(url);
+        yield return loader.SendWebRequest();
+        output.texture = ((DownloadHandlerTexture)loader.downloadHandler).texture;
+#else
         var loader = new WWW(url);
         yield return loader;
         output.texture = loader.texture;
+#endif
     }
 }
