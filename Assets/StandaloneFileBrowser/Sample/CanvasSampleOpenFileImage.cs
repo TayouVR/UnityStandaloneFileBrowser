@@ -9,7 +9,6 @@ using UnityEngine.EventSystems;
 using UnityEngine.Networking;
 #endif
 using SFB;
-using UnityEngine.Networking;
 
 [RequireComponent(typeof(Button))]
 public class CanvasSampleOpenFileImage : MonoBehaviour, IPointerDownHandler {
